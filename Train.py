@@ -13,14 +13,20 @@ from PIL import ImageFile, Image
 from CelebDataset import CelebDataset
 from MyModels import GeneratorModel, DiscriminatorModel
 
+ngpu = 1
+device = torch.device("cuda:0" if (torch.cuda.is_available() and ngpu > 0) else "cpu")
+print(device,"is available!")
+
+
+
 transform = transforms.Compose([
                 transforms.Resize(64),
                 transforms.CenterCrop(64),
                 transforms.ToTensor(),
                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
                                 ])
-dataset = CelebDataset("images/img_align_celeba/", transform=transform)
-dataloader = DataLoader(dataset, shuffle=True, batch_size=64, num_workers=2)
+dataset = CelebDataset("D:\workspace\DCGAN\LSGAN_CelebA\LSGAN_CelebA\images\img_align_celeba", transform=transform)
+dataloader = DataLoader(dataset, shuffle=True, batch_size=64, num_workers=0)
 
 def view_samples(images):
     img = torchvision.utils.make_grid(images, padding=2, normalize=True)
@@ -73,14 +79,14 @@ n_feature_maps_g = 64
 n_feature_maps_d = 64
 epochs = 100
 
-fixed_noise = torch.randn(64, n_z, 1, 1).cuda()
+fixed_noise = torch.randn(64, n_z, 1, 1).to(device)
 torch.save(fixed_noise, "fixed_noise.pt")
 
 g_losses = []
 d_losses = []
 
-Dis = DiscriminatorModel(n_c, n_feature_maps_d).cuda()
-Gen = GeneratorModel(n_z, n_feature_maps_g, n_c).cuda()
+Dis = DiscriminatorModel(n_c, n_feature_maps_d).to(device)
+Gen = GeneratorModel(n_z, n_feature_maps_g, n_c).to(device)
 
 lr_g = 2e-4
 lr_d = 2e-4
@@ -99,10 +105,10 @@ for e in range(1, epochs+1):
     for i, batch in enumerate(dataloader, 1):
         
         batch_size = batch.size(0)
-        real_image = batch.cuda()
+        real_image = batch.to(device)
 
-        zero_labels = torch.zeros(batch_size, 1, 1, 1).cuda()
-        one_labels = torch.ones(batch_size, 1, 1, 1).cuda()
+        zero_labels = torch.zeros(batch_size, 1, 1, 1).to(device)
+        one_labels = torch.ones(batch_size, 1, 1, 1).to(device)
 
         Dis.zero_grad()
         D_x = Dis(real_image)
@@ -110,7 +116,7 @@ for e in range(1, epochs+1):
         d_running_loss += D_x_loss.item()
         D_x_loss.backward()
         
-        z = torch.randn(batch_size, n_z, 1, 1).cuda()  
+        z = torch.randn(batch_size, n_z, 1, 1).to(device)  
         G_z = Gen(z)
         D_G_z = Dis(G_z.detach())
         D_G_z_loss = criterion(D_G_z, zero_labels)

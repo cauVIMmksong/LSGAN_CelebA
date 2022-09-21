@@ -26,7 +26,6 @@ class DiscriminatorModel(nn.Module):
             nn.BatchNorm2d(n_fmps*8),
             nn.LeakyReLU(0.2, True),
             nn.Conv2d(n_fmps * 8, 1, 4, stride=1, padding=0),
-            nn.Sigmoid()
         )
         self.linear = nn.Linear(1, 1)
         self.net.apply(weights_init)
@@ -41,9 +40,6 @@ class GeneratorModel(nn.Module):
     def __init__(self, n_z, n_fmps, n_c):
         super(GeneratorModel, self).__init__()
         self.net = nn.Sequential(
-            nn.AvgPool2d(4),
-            nn.Conv2d(3, 100, kernel_size=8 ,stride=9 ),
-
             nn.ConvTranspose2d(n_z, n_fmps*8, 4, 1, 0),
             nn.BatchNorm2d(n_fmps*8),
             nn.LeakyReLU(0.2, True),

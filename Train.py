@@ -25,7 +25,7 @@ transform = transforms.Compose([
                 transforms.ToTensor(),
                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
                                 ])
-dataset = CelebDataset("D:\workspace\DCGAN\LSGAN_CelebA\LSGAN_CelebA\images\img_align_celeba", transform=transform)
+dataset = CelebDataset("/home/work/LSGAN_CelebA/LSGAN_CelebA-main/FFHQ", transform=transform)
 dataloader = DataLoader(dataset, shuffle=True, batch_size=64, num_workers=0)
 
 def view_samples(images):

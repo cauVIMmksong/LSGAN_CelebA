@@ -12,3 +12,8 @@ progress_pics/*/
 progress_pics/**/*.jpg
 progress_pics/**/*.jpeg
 progress_pics/**/*.png
+
+progress_pics_CPS/*/
+progress_pics_CPS/**/*.jpg
+progress_pics_CPS/**/*.jpeg
+progress_pics_CPS/**/*.png

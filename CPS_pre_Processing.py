@@ -55,3 +55,33 @@ for file_name in file_list:
 
 print(f"디렉토리 내 이미지 파일 개수: {image_count}")
 # %%
+import os
+
+directory = "/home/work/LSGAN_CelebA/LSGAN_CelebA-main/images/CPS_Dog_Cataract"  # 디렉토리 경로
+image_extensions = [".jpg", ".jpeg", ".png", ".gif"]  # 이미지 파일 확장자
+
+# 디렉토리 내의 파일 목록 가져오기
+file_list = os.listdir(directory)
+
+# 이미지 파일 개수를 세는 변수
+image_count = 0
+
+# 이미지 파일의 이름 변경
+for file_name in file_list:
+    file_extension = os.path.splitext(file_name)[1].lower()
+
+    if file_extension in image_extensions:
+        # 이미지 파일 경로
+        file_path = os.path.join(directory, file_name)
+
+        # 새로운 이미지 파일 이름 생성
+        new_file_name = "image" + str(image_count) + file_extension
+
+        # 새로운 이름으로 이미지 파일 변경
+        new_file_path = os.path.join(directory, new_file_name)
+        os.rename(file_path, new_file_path)
+
+        image_count += 1
+
+print("이미지 파일 이름 변경이 완료되었습니다.")
+# %%

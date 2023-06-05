@@ -57,7 +57,7 @@ print(f"디렉토리 내 이미지 파일 개수: {image_count}")
 # %%
 import os
 
-directory = "/home/work/LSGAN_CelebA/LSGAN_CelebA-main/images/CPS_Dog_Cataract"  # 디렉토리 경로
+directory = "images/CPS_DOG_Cataract_Rand"  # 디렉토리 경로
 image_extensions = [".jpg", ".jpeg", ".png", ".gif"]  # 이미지 파일 확장자
 
 # 디렉토리 내의 파일 목록 가져오기
@@ -84,4 +84,33 @@ for file_name in file_list:
         image_count += 1
 
 print("이미지 파일 이름 변경이 완료되었습니다.")
+# %%
+import os
+import random
+import shutil
+
+source_dir = "images/CPS_Dog_Cataract"  # 원본 디렉토리 경로
+target_dir = "images/CPS_DOG_Cataract_Rand"  # 대상 디렉토리 경로
+num_images = 8192  # 추출할 이미지 파일 개수
+
+# 원본 디렉토리 내의 이미지 파일 목록 가져오기
+file_list = []
+for root, dirs, files in os.walk(source_dir):
+    for file in files:
+        if file.lower().endswith((".jpg", ".jpeg", ".png", ".gif")):
+            file_list.append(os.path.join(root, file))
+
+# 이미지 파일 목록에서 랜덤하게 num_images 개수만큼 추출
+random_images = random.sample(file_list, num_images)
+
+# 대상 디렉토리 생성
+os.makedirs(target_dir, exist_ok=True)
+
+# 추출한 이미지 파일들을 대상 디렉토리로 옮기기
+for image_path in random_images:
+    image_file = os.path.basename(image_path)
+    target_path = os.path.join(target_dir, image_file)
+    shutil.copy(image_path, target_path)
+
+print(f"{num_images}개의 이미지 파일이 성공적으로 추출되어 {target_dir}로 이동되었습니다.")
 # %%

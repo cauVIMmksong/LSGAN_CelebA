@@ -1,0 +1,14 @@
+images/*/
+images/**/*.jpg
+images/**/*.jpeg
+images/**/*.png
+
+FFHQ/*/
+FFHQ/*.jpg
+FFHQ/*.jpeg
+FFHQ/*.png
+
+progress_pics/*/
+progress_pics/**/*.jpg
+progress_pics/**/*.jpeg
+progress_pics/**/*.png

@@ -4,9 +4,8 @@ from PIL import Image
 
 
 
-class LAG(Dataset):
 
-
+class CPS(Dataset):
     def __init__(self, root_dir, transform=None):
         self.image_names = []
         self.root_dir = root_dir
